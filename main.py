@@ -2,7 +2,6 @@ import requests
 import sys
 from bs4 import BeautifulSoup
 
-
 """
 Parsing the 2nd argument which is the movie title
 For example:
@@ -14,9 +13,9 @@ name = sys.argv[1].lower()
 r = requests.get('https://yts.am/browse-movies')
 soup = BeautifulSoup(r.text, 'lxml')
 h2 = soup.find_all('h2')
-movie_count = int((str(h2)[5:10].replace(',', '')))
-urls = []
+movie_count = int((str(h2)[5:11].replace(',', '')))
 titles = []
+ids = []
 page = 1
 
 while True and page < movie_count / 50:
@@ -27,13 +26,13 @@ while True and page < movie_count / 50:
         'page': page
     }
     r = requests.get('https://yts.am/api/v2/list_movies.json', params=payload)
-    print(r.url)
+    print("Searching on page: " + str(page))
     # Using json method, since the response is in json
     r_dict = r.json()
 
     for i in range(payload['limit']):
-        urls.append(r_dict['data']['movies'][i]['torrents'][0]['url'])
         titles.append(r_dict['data']['movies'][i]['title'])
+        ids.append(r_dict['data']['movies'][i]['id'])
 
     count = 0
     val = 0
@@ -49,12 +48,30 @@ while True and page < movie_count / 50:
     if(flag == 0):
         pass
     else:
-        finalURL = urls[val]
-        finalTitle = titles[val].replace(':', '')
-        with open(finalTitle + '.torrent', 'wb') as f:
-            f.write(requests.get(finalURL).content)
+        finalTitle = titles[val]
+        finalId = ids[val]
+        payload = {
+            'movie_id': finalId
+        }
+
+        r = requests.get(
+            'https://yts.am/api/v2/movie_details.json', params=payload)
+        r_new_dict = r.json()
+        print("\n")
+
+        print("Choose your option:")
+        for url in r_new_dict['data']['movie']['torrents']:
+            print("Quality: " + url['quality'] + "\t" +
+                  "Size: " + url['size'] + "\t" + "Type: " + url['type'])
+
+        choice = int(input())
+        with open(finalTitle.replace(':', '') + '.torrent', 'wb') as f:
+            f.write(requests.get(
+                r_new_dict['data']['movie']['torrents'][choice - 1]['url']).content)
         exit()
 
     page += 1
     payload['page'] = page
     r_dict.clear()
+    del titles[:]
+    del ids[:]
