@@ -1,5 +1,6 @@
 import requests
 import sys
+from bs4 import BeautifulSoup
 
 
 """
@@ -10,12 +11,15 @@ For example:
 In the above case, arg[1],  which is 'The Trip To Spain', will be stored in name
 """
 name = sys.argv[1].lower()
-
+r = requests.get('https://yts.am/browse-movies')
+soup = BeautifulSoup(r.text, 'lxml')
+h2 = soup.find_all('h2')
+movie_count = int((str(h2)[5:10].replace(',', '')))
 urls = []
 titles = []
 page = 1
 
-while True and page < 500:
+while True and page < movie_count / 50:
 
     # Parameters to be added at the end of the url
     payload = {
