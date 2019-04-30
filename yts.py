@@ -14,7 +14,7 @@ def main():
     """
     parser = argparse.ArgumentParser()
     parser.add_argument('movie', type=str,
-                        help='Movie name')
+                        help='Movie name in single quotes')
     args = parser.parse_args()
     name = args.movie
 
