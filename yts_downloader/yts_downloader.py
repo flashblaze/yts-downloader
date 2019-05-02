@@ -1,17 +1,11 @@
 import requests
 from bs4 import BeautifulSoup
 import argparse
-from requests.exceptions import Timeout
 
 
 def main():
-    """
-    Parsing the 2nd argument which is the movie title
-    For example:
-        python main.py 'The Trip To Spain'
+    # First argument is the movie name
 
-    In the above case, arg[1],  which is 'The Trip To Spain', will be stored in name
-    """
     parser = argparse.ArgumentParser()
     parser.add_argument('movie', type=str,
                         help='Movie name in single quotes')
@@ -19,12 +13,12 @@ def main():
     name = args.movie
 
     try:
-        r = requests.get('https://yts.am/browse-movies', timeout=15)
-    except Timeout:
+        r = requests.get('https://yts.am/browse-movies', timeout=7)
+    except requests.Timeout:
         print('Request timeout')
     else:
 
-        soup = BeautifulSoup(r.text, 'lxml')
+        soup = BeautifulSoup(r.text, 'html.parser')
         h2 = soup.find_all('h2')
         movie_count = int((str(h2)[5:11].replace(',', '')))
         titles = []
@@ -79,12 +73,18 @@ def main():
                 print("\n")
 
                 print("Choose your option:")
-                for url in r_new_dict['data']['movie']['torrents']:
-                    print("Quality: " + url['quality'] + "\t" +
+                for index, url in enumerate(r_new_dict['data']['movie']['torrents']):
+                    print(str(index + 1) + "\tQuality: " + url['quality'] + "\t" +
                           "Size: " + url['size'] + "\t" + "Type: " + url['type'])
 
+                url_count = len(r_new_dict['data']['movie']['torrents'])
+                print(
+                    str(url_count + 1) + "\tExit")
+
                 choice = int(input())
-                with open(finalTitle.replace(':', '') + '.torrent', 'wb') as f:
+                if(choice == url_count + 1):
+                    exit()
+                with open(finalTitle.replace(':', '') + r_new_dict['data']['movie']['torrents'][choice - 1]['quality'] + '.torrent', 'wb') as f:
                     f.write(requests.get(
                         r_new_dict['data']['movie']['torrents'][choice - 1]['url']).content)
                 exit()
@@ -94,3 +94,8 @@ def main():
             r_dict.clear()
             del titles[:]
             del ids[:]
+
+
+# Uncomment this for testing
+if __name__ == "__main__":
+    main()
