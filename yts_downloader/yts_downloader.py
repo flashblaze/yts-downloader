@@ -94,7 +94,8 @@ def main():
             r_dict.clear()
             del titles[:]
             del ids[:]
-
+            
+        print("Movie not found")
 
 # Uncomment this for testing
 if __name__ == "__main__":

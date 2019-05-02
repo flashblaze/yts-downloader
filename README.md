@@ -1,4 +1,4 @@
-# YTS
+# yts-downloader
 
 Python CLI to download YTS movies using their API
 
@@ -15,5 +15,21 @@ Python CLI to download YTS movies using their API
 `yts-downloader <movie name>` to search for the movie in [yts.am](https://yts.am) database and download it.
 
 eg: `yts-downloader 'aquaman'`
+
+# Building
+
+`python setup.py sdist bdist_wheel`
+
+# Deploying on TestPyPI
+
+`twine upload --repository-url https://test.pypi.org/legacy/ dist/*`
+
+# Deploying on PyPI
+
+`twine upload dist/*`
+
+:tada: Live here: [yts-downloader](https://pypi.org/project/yts-downloader/) :tada:
+
+Download via: `pip install yts-downloader`
 
 **PS: I, in no way support piracy. This "tool" was created as a simple application of their API**
