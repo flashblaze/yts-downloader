@@ -1,4 +1,4 @@
-# yts-downloader
+# yts-downloader &middot; [![PyPI version shields.io](https://img.shields.io/pypi/v/yts-downloader.svg)](https://pypi.python.org/pypi/yts-downloader/) [![PyPI license](https://img.shields.io/pypi/l/yts-downloader.svg)](https://pypi.org/project/yts-downloader/) [![PyPI pyversions](https://img.shields.io/pypi/pyversions/yts-downloader.svg)](https://pypi.python.org/pypi/yts-downloader/) [![PyPI download total](https://img.shields.io/pypi/dm/yts-downloader.svg)](https://pypi.python.org/pypi/yts-downloader/)
 
 Python CLI to download YTS movies using their API
 
