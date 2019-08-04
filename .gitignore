@@ -125,3 +125,4 @@ dmypy.json
 .vscode/
 *.torrent
 .pypirc
+.idea

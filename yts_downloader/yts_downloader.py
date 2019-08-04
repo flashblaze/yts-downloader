@@ -10,10 +10,10 @@ def main():
     parser.add_argument('movie', type=str,
                         help='Movie name in single quotes')
     args = parser.parse_args()
-    name = args.movie
+    name = args.movie.lower()
 
     try:
-        r = requests.get('https://yts.am/browse-movies', timeout=7)
+        r = requests.get('https://yts.lt/browse-movies', timeout=7)
     except requests.Timeout:
         print('Request timeout')
     else:
@@ -33,7 +33,7 @@ def main():
                 'page': page
             }
             r = requests.get(
-                'https://yts.am/api/v2/list_movies.json', params=payload)
+                'https://yts.lt/api/v2/list_movies.json', params=payload)
             print("Searching on page: " + str(page))
 
             if(r.status_code != 200):
@@ -68,7 +68,7 @@ def main():
                 }
 
                 r = requests.get(
-                    'https://yts.am/api/v2/movie_details.json', params=payload)
+                    'https://yts.lt/api/v2/movie_details.json', params=payload)
                 r_new_dict = r.json()
                 print("\n")
 
@@ -99,5 +99,5 @@ def main():
 
 
 # Uncomment this for testing
-# if __name__ == "__main__":
-#     main()
+if __name__ == "__main__":
+    main()
