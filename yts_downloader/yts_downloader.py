@@ -13,14 +13,14 @@ def main():
     name = args.movie.lower()
 
     try:
-        r = requests.get('https://yts.lt/browse-movies', timeout=7)
+        r = requests.get('https://yts.lt/browse-movies', timeout=45)
     except requests.Timeout:
         print('Request timeout')
     else:
 
         soup = BeautifulSoup(r.text, 'html.parser')
         h2 = soup.find_all('h2')
-        movie_count = int((str(h2)[5:11].replace(',', '')))
+        movie_count = int((str(h2)[8:13].replace(',', '')))
         titles = []
         ids = []
         page = 1
